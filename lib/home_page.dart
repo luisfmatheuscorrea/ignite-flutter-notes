@@ -20,33 +20,40 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (var i = 0; i < notes.length; i++)
-              Card(
-                child: ListTile(
-                  title: Text(notes[i]),
-                  onTap: () async {
-                    var response = await Navigator.pushNamed(
-                        context, "/create-note",
-                        arguments: notes[i]);
-                    if (response != null) {
-                      var description = response as String;
-                      if (response.isEmpty) {
-                        notes.removeAt(i);
-                      } else {
-                        notes[i] = description as String;
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Column(
+            children: [
+              for (var i = 0; i < notes.length; i++)
+                Card(
+                  child: ListTile(
+                    title: Text(notes[i]),
+                    onTap: () async {
+                      var response = await Navigator.pushNamed(
+                          context, "/create-note",
+                          arguments: notes[i]);
+                      if (response != null) {
+                        var description = response as String;
+                        if (response.isEmpty) {
+                          notes.removeAt(i);
+                        } else {
+                          notes[i] = description as String;
+                        }
+                        setState(() {});
                       }
-                      setState(() {});
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: Icon(
+          Icons.note_add,
+          size: 26,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         onPressed: () async {
           var description = await Navigator.pushNamed(context, "/create-note");
           if (description != null) {
